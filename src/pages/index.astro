@@ -1,0 +1,200 @@
+---
+import Base from '@layouts/Base.astro';
+import Sidebar from '@components/layout/Sidebar.astro';
+import Header from '@components/layout/Header.astro';
+import QuickLinks from '@components/QuickLinks.astro';
+import DashboardCard from '@components/DashboardCard.astro';
+import AnuncioCard from '@components/AnuncioCard.astro';
+import EventoItem from '@components/EventoItem.astro';
+
+import quickAccess from '@content/settings/quickAccess.json';
+import contact from '@content/settings/contact.json';
+
+const basePath = import.meta.env.BASE_URL;
+
+/* Load announcements from markdown files */
+const anuncioFiles = import.meta.glob<{
+  frontmatter: {
+    title: string;
+    date: string;
+    category: string;
+    excerpt: string;
+    featured: boolean;
+    display_mode: string;
+  };
+}>('../content/anuncios/*.md', { eager: true });
+
+const anuncios = Object.entries(anuncioFiles)
+  .map(([path, mod]) => {
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+    return { ...mod.frontmatter, slug };
+  })
+  .filter((a) => a.display_mode === 'visible')
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 5);
+
+/* Load upcoming events */
+interface EventoData {
+  title: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  location?: string;
+  category: string;
+  display_mode: string;
+}
+
+const eventoFiles = import.meta.glob<{ default: EventoData }>('../content/eventos/*.json', { eager: true });
+
+const today = new Date().toISOString().split('T')[0];
+const eventos = Object.values(eventoFiles)
+  .map((mod) => mod.default)
+  .filter((e) => e.display_mode === 'visible' && e.start_date >= today)
+  .sort((a, b) => a.start_date.localeCompare(b.start_date))
+  .slice(0, 4);
+---
+
+<Base title="Inicio">
+  <Sidebar slot="sidebar" />
+  <Header slot="header" />
+
+  <div class="dashboard-welcome">
+    <h1 class="dashboard-title">Bienvenido a la Intranet</h1>
+    <p class="dashboard-subtitle">Agencia del Inspector General de Tributos, Rentas y Contribuciones Parafiscales</p>
+  </div>
+
+  <QuickLinks items={quickAccess.items} />
+
+  <div class="dashboard-grid">
+    <DashboardCard title="Anuncios recientes" icon="fa-bullhorn" href={`${basePath}anuncios`}>
+      {anuncios.length > 0 ? (
+        anuncios.map((anuncio) => (
+          <AnuncioCard
+            title={anuncio.title}
+            date={anuncio.date}
+            category={anuncio.category}
+            excerpt={anuncio.excerpt}
+            href={`${basePath}anuncios/${anuncio.slug}`}
+            featured={anuncio.featured}
+          />
+        ))
+      ) : (
+        <p class="empty-state">No hay anuncios recientes.</p>
+      )}
+    </DashboardCard>
+
+    <div class="dashboard-sidebar-col">
+      <DashboardCard title="Proximos eventos" icon="fa-calendar-days">
+        {eventos.length > 0 ? (
+          eventos.map((evento) => (
+            <EventoItem
+              title={evento.title}
+              description={evento.description}
+              startDate={evento.start_date}
+              endDate={evento.end_date}
+              location={evento.location}
+              category={evento.category}
+            />
+          ))
+        ) : (
+          <p class="empty-state">No hay eventos proximos.</p>
+        )}
+      </DashboardCard>
+
+      <DashboardCard title="Contacto interno" icon="fa-phone">
+        <div class="contact-list">
+          <div class="contact-item">
+            <i class="fa-solid fa-headset" aria-hidden="true"></i>
+            <div>
+              <strong>{contact.helpdesk.name}</strong>
+              <p>Ext. {contact.helpdesk.extension} &middot; {contact.helpdesk.email}</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="fa-solid fa-users" aria-hidden="true"></i>
+            <div>
+              <strong>{contact.hr.name}</strong>
+              <p>Ext. {contact.hr.extension} &middot; {contact.hr.email}</p>
+            </div>
+          </div>
+        </div>
+      </DashboardCard>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .dashboard-welcome {
+    margin-bottom: var(--space-xl);
+  }
+
+  .dashboard-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--theme-text-primary);
+  }
+
+  .dashboard-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    margin-top: var(--space-xs);
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+    align-items: start;
+  }
+
+  .dashboard-sidebar-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .empty-state {
+    color: var(--theme-text-muted);
+    font-size: var(--font-size-sm);
+    padding: var(--space-lg) 0;
+    text-align: center;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .contact-item i {
+    color: var(--theme-accent);
+    margin-top: 2px;
+    width: 18px;
+    text-align: center;
+  }
+
+  .contact-item strong {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+  }
+
+  .contact-item p {
+    font-size: var(--font-size-xs);
+    color: var(--theme-text-secondary);
+    margin-top: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

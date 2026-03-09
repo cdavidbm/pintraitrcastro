@@ -1,0 +1,100 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+---
+
+<SectionPage title="Talento Humano" breadcrumbs={[{ label: 'Talento Humano' }]}>
+  <p class="section-intro">
+    Area de Talento Humano de la Agencia ITRC, encargada de la gestion del recurso humano,
+    bienestar laboral, capacitacion y desarrollo de los servidores publicos.
+  </p>
+
+  <div class="th-grid">
+    <a href="/capacitaciones" class="th-card">
+      <div class="th-icon"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></div>
+      <h3>Capacitaciones</h3>
+      <p>Plan Institucional de Capacitacion, cursos, talleres y formacion para servidores.</p>
+    </a>
+    <a href="/bienestar" class="th-card">
+      <div class="th-icon"><i class="fa-solid fa-heart" aria-hidden="true"></i></div>
+      <h3>Bienestar</h3>
+      <p>Programas de bienestar laboral, actividades recreativas y beneficios para servidores.</p>
+    </a>
+    <div class="th-card">
+      <div class="th-icon"><i class="fa-solid fa-user-check" aria-hidden="true"></i></div>
+      <h3>Situaciones Administrativas</h3>
+      <p>Licencias, permisos, vacaciones, comisiones y demas novedades del personal.</p>
+    </div>
+    <div class="th-card">
+      <div class="th-icon"><i class="fa-solid fa-file-signature" aria-hidden="true"></i></div>
+      <h3>Evaluacion del Desempeño</h3>
+      <p>Instrumentos y cronograma de evaluacion del desempeño laboral.</p>
+    </div>
+    <div class="th-card">
+      <div class="th-icon"><i class="fa-solid fa-shield-heart" aria-hidden="true"></i></div>
+      <h3>SST</h3>
+      <p>Sistema de Gestion de Seguridad y Salud en el Trabajo.</p>
+    </div>
+    <div class="th-card">
+      <div class="th-icon"><i class="fa-solid fa-handshake" aria-hidden="true"></i></div>
+      <h3>Comite de Convivencia</h3>
+      <p>Informacion sobre el Comite de Convivencia Laboral y prevencion del acoso.</p>
+    </div>
+  </div>
+</SectionPage>
+
+<style>
+  .section-intro {
+    color: var(--theme-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    max-width: 72ch;
+  }
+
+  .th-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .th-card {
+    display: block;
+    padding: var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  a.th-card:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--theme-accent);
+  }
+
+  .th-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(9, 67, 181, 0.08);
+    color: var(--theme-accent);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .th-card h3 {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .th-card p {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    line-height: 1.5;
+  }
+</style>

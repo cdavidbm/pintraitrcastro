@@ -1,0 +1,149 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+
+export async function getStaticPaths() {
+  const files = import.meta.glob<{
+    frontmatter: {
+      title: string;
+      numero: string;
+      date: string;
+      dependencia: string;
+      excerpt: string;
+      archivo_pdf?: string;
+      display_mode: string;
+    };
+    compiledContent: () => string;
+  }>('../../content/circulares/*.md', { eager: true });
+
+  return Object.entries(files).map(([path, mod]) => {
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+    return {
+      params: { slug },
+      props: {
+        ...mod.frontmatter,
+        content: mod.compiledContent(),
+      },
+    };
+  });
+}
+
+interface Props {
+  title: string;
+  numero: string;
+  date: string;
+  dependencia: string;
+  archivo_pdf?: string;
+  content: string;
+}
+
+const { title, numero, date, dependencia, archivo_pdf, content } = Astro.props;
+const basePath = import.meta.env.BASE_URL;
+
+const formattedDate = new Date(date).toLocaleDateString('es-CO', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<SectionPage
+  title={title}
+  breadcrumbs={[
+    { label: 'Circulares', href: '/circulares' },
+    { label: numero },
+  ]}
+>
+  <article class="circular-detail">
+    <div class="circular-detail-header">
+      <span class="circular-detail-numero">{numero}</span>
+      <span class="circular-detail-dep">{dependencia}</span>
+      <time datetime={date}>{formattedDate}</time>
+    </div>
+
+    {archivo_pdf && (
+      <a href={`${basePath}${archivo_pdf.replace(/^\//, '')}`} class="circular-download" download>
+        <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+        Descargar PDF
+      </a>
+    )}
+
+    <div class="circular-detail-content" set:html={content} />
+  </article>
+</SectionPage>
+
+<style>
+  .circular-detail {
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+  }
+
+  .circular-detail-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--theme-border-light);
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+  }
+
+  .circular-detail-numero {
+    font-weight: 700;
+    color: var(--theme-accent-gold);
+    background: rgba(179, 139, 64, 0.1);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-sm);
+  }
+
+  .circular-detail-dep {
+    color: var(--theme-text-secondary);
+  }
+
+  .circular-download {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(201, 42, 42, 0.08);
+    color: #c92a2a;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    margin-bottom: var(--space-lg);
+  }
+
+  .circular-download:hover {
+    background: rgba(201, 42, 42, 0.15);
+    text-decoration: none;
+  }
+
+  .circular-detail-content {
+    line-height: 1.8;
+  }
+
+  .circular-detail-content :global(h2) {
+    font-size: var(--font-size-xl);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+  }
+
+  .circular-detail-content :global(ul),
+  .circular-detail-content :global(ol) {
+    padding-left: var(--space-xl);
+    margin: var(--space-md) 0;
+  }
+
+  .circular-detail-content :global(li) {
+    margin-bottom: var(--space-xs);
+  }
+
+  .circular-detail-content :global(p) {
+    margin-bottom: var(--space-md);
+  }
+</style>

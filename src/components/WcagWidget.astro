@@ -1,0 +1,212 @@
+---
+/* Widget de accesibilidad WCAG — aumentar texto, contraste alto, escala de grises */
+---
+
+<div class="wcag-widget" id="wcag-widget">
+  <button
+    class="wcag-toggle"
+    id="wcag-toggle"
+    aria-label="Abrir opciones de accesibilidad"
+    type="button"
+  >
+    <i class="fa-solid fa-universal-access" aria-hidden="true"></i>
+  </button>
+
+  <div class="wcag-panel" id="wcag-panel" role="dialog" aria-label="Opciones de accesibilidad" hidden>
+    <h3 class="wcag-panel-title">Accesibilidad</h3>
+
+    <div class="wcag-option">
+      <span>Tamano de texto</span>
+      <div class="wcag-btn-group">
+        <button type="button" data-action="font-decrease" aria-label="Disminuir tamano de texto">A-</button>
+        <button type="button" data-action="font-reset" aria-label="Restablecer tamano de texto">A</button>
+        <button type="button" data-action="font-increase" aria-label="Aumentar tamano de texto">A+</button>
+      </div>
+    </div>
+
+    <div class="wcag-option">
+      <span>Alto contraste</span>
+      <button type="button" data-action="high-contrast" aria-label="Alternar alto contraste" class="wcag-toggle-btn">
+        <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="wcag-option">
+      <span>Escala de grises</span>
+      <button type="button" data-action="grayscale" aria-label="Alternar escala de grises" class="wcag-toggle-btn">
+        <i class="fa-solid fa-droplet-slash" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const WCAG_KEY = 'intranet-wcag';
+  const widget = document.getElementById('wcag-widget');
+  const toggle = document.getElementById('wcag-toggle');
+  const panel = document.getElementById('wcag-panel');
+
+  function loadWcagState(): { fontSize: number; highContrast: boolean; grayscale: boolean } {
+    try {
+      return JSON.parse(localStorage.getItem(WCAG_KEY) ?? '{}');
+    } catch {
+      return { fontSize: 100, highContrast: false, grayscale: false };
+    }
+  }
+
+  function saveWcagState(state: { fontSize: number; highContrast: boolean; grayscale: boolean }) {
+    localStorage.setItem(WCAG_KEY, JSON.stringify(state));
+  }
+
+  const state = { fontSize: 100, highContrast: false, grayscale: false, ...loadWcagState() };
+  applyState();
+
+  toggle?.addEventListener('click', () => {
+    const isHidden = panel?.hidden;
+    if (panel) panel.hidden = !isHidden;
+  });
+
+  /* Close panel on outside click */
+  document.addEventListener('click', (e) => {
+    if (widget && !widget.contains(e.target as Node)) {
+      if (panel) panel.hidden = true;
+    }
+  });
+
+  widget?.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement).closest('[data-action]') as HTMLElement | null;
+    if (!target) return;
+
+    const action = target.dataset.action;
+    switch (action) {
+      case 'font-increase':
+        state.fontSize = Math.min(150, state.fontSize + 10);
+        break;
+      case 'font-decrease':
+        state.fontSize = Math.max(80, state.fontSize - 10);
+        break;
+      case 'font-reset':
+        state.fontSize = 100;
+        break;
+      case 'high-contrast':
+        state.highContrast = !state.highContrast;
+        break;
+      case 'grayscale':
+        state.grayscale = !state.grayscale;
+        break;
+    }
+    applyState();
+    saveWcagState(state);
+  });
+
+  function applyState() {
+    document.documentElement.style.fontSize = `${state.fontSize}%`;
+    document.documentElement.classList.toggle('high-contrast', state.highContrast);
+    document.documentElement.classList.toggle('grayscale', state.grayscale);
+  }
+</script>
+
+<style>
+  .wcag-widget {
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    z-index: 1000;
+  }
+
+  .wcag-toggle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--theme-accent);
+    background: var(--theme-bg-surface);
+    color: var(--theme-accent);
+    font-size: var(--font-size-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    transition: background var(--transition-fast);
+  }
+
+  .wcag-toggle:hover {
+    background: var(--theme-accent);
+    color: var(--neutral-0);
+  }
+
+  .wcag-panel {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    width: 260px;
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-md);
+  }
+
+  .wcag-panel-title {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--theme-border-light);
+  }
+
+  .wcag-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-sm) 0;
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+  }
+
+  .wcag-btn-group {
+    display: flex;
+    gap: 2px;
+  }
+
+  .wcag-btn-group button,
+  .wcag-toggle-btn {
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--theme-border);
+    background: var(--theme-bg);
+    color: var(--theme-text-primary);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    transition: background var(--transition-fast);
+  }
+
+  .wcag-btn-group button:hover,
+  .wcag-toggle-btn:hover {
+    background: var(--theme-accent);
+    color: var(--neutral-0);
+    border-color: var(--theme-accent);
+  }
+</style>
+
+<style is:global>
+  html.high-contrast {
+    --theme-text-primary: #000000 !important;
+    --theme-text-secondary: #1a1a1a !important;
+    --theme-bg: #ffffff !important;
+    --theme-bg-surface: #ffffff !important;
+    --theme-border: #000000 !important;
+  }
+
+  html.high-contrast.theme-dark {
+    --theme-text-primary: #ffffff !important;
+    --theme-text-secondary: #e0e0e0 !important;
+    --theme-bg: #000000 !important;
+    --theme-bg-surface: #111111 !important;
+    --theme-border: #ffffff !important;
+  }
+
+  html.grayscale {
+    filter: grayscale(100%);
+  }
+</style>

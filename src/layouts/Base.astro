@@ -1,0 +1,66 @@
+---
+import WcagWidget from '@components/WcagWidget.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Intranet de la Agencia del Inspector General de Tributos, Rentas y Contribuciones Parafiscales' } = Astro.props;
+const basePath = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href={`${basePath}favicon.svg`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;0,6..12,700;1,6..12,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>{title} | Intranet ITRC</title>
+
+    {/* Prevenir FOUC del tema */}
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('intranet-theme');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('theme-dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Ir al contenido principal</a>
+
+    <div class="app-layout">
+      <slot name="sidebar" />
+
+      <div class="app-main" id="app-main">
+        <slot name="header" />
+
+        <main id="main-content" class="app-content" role="main">
+          <slot />
+        </main>
+      </div>
+    </div>
+
+    <WcagWidget />
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

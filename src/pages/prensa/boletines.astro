@@ -1,0 +1,42 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+---
+
+<SectionPage title="Boletines de Prensa" breadcrumbs={[{ label: 'Prensa', href: '/prensa' }, { label: 'Boletines' }]}>
+  <p class="section-intro">
+    Boletines de prensa y comunicacion externa de la Agencia del Inspector General de Tributos, Rentas y Contribuciones Parafiscales.
+  </p>
+
+  <div class="empty-state">
+    <i class="fa-solid fa-scroll" aria-hidden="true"></i>
+    <p>Los boletines de prensa seran publicados proximamente a traves del gestor de contenido.</p>
+  </div>
+</SectionPage>
+
+<style>
+  .section-intro {
+    color: var(--theme-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    max-width: 72ch;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    padding: var(--space-2xl);
+    background: var(--theme-bg-surface);
+    border: 2px dashed var(--theme-border-light);
+    border-radius: var(--radius-lg);
+    color: var(--theme-text-muted);
+    text-align: center;
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+    opacity: 0.4;
+  }
+</style>

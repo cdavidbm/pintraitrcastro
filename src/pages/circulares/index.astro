@@ -1,0 +1,158 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+
+const basePath = import.meta.env.BASE_URL;
+
+const circularFiles = import.meta.glob<{
+  frontmatter: {
+    title: string;
+    numero: string;
+    date: string;
+    dependencia: string;
+    excerpt: string;
+    archivo_pdf?: string;
+    display_mode: string;
+  };
+}>('../../content/circulares/*.md', { eager: true });
+
+const circulares = Object.entries(circularFiles)
+  .map(([path, mod]) => {
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+    return { ...mod.frontmatter, slug };
+  })
+  .filter((c) => c.display_mode === 'visible')
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<SectionPage title="Circulares Internas" breadcrumbs={[{ label: 'Circulares' }]}>
+  <div class="circulares-list">
+    {circulares.length > 0 ? (
+      circulares.map((circular) => {
+        const formattedDate = new Date(circular.date).toLocaleDateString('es-CO', {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+        return (
+          <article class="circular-card">
+            <div class="circular-numero">{circular.numero}</div>
+            <div class="circular-body">
+              <h3 class="circular-title">
+                <a href={`${basePath}circulares/${circular.slug}`}>{circular.title}</a>
+              </h3>
+              <p class="circular-excerpt">{circular.excerpt}</p>
+              <div class="circular-meta">
+                <span><i class="fa-solid fa-building" aria-hidden="true"></i> {circular.dependencia}</span>
+                <time datetime={circular.date}>{formattedDate}</time>
+              </div>
+            </div>
+            {circular.archivo_pdf && (
+              <a href={`${basePath}${circular.archivo_pdf.replace(/^\//, '')}`} class="circular-pdf" download aria-label={`Descargar PDF de ${circular.title}`}>
+                <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+              </a>
+            )}
+          </article>
+        );
+      })
+    ) : (
+      <p class="empty-state">No hay circulares disponibles.</p>
+    )}
+  </div>
+</SectionPage>
+
+<style>
+  .circulares-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .circular-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    transition: box-shadow var(--transition-fast);
+  }
+
+  .circular-card:hover {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .circular-numero {
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--theme-accent-gold);
+    background: rgba(179, 139, 64, 0.1);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  .circular-body {
+    flex: 1;
+  }
+
+  .circular-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+  }
+
+  .circular-title a {
+    color: var(--theme-text-primary);
+    text-decoration: none;
+  }
+
+  .circular-title a:hover {
+    color: var(--theme-accent);
+    text-decoration: underline;
+  }
+
+  .circular-excerpt {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    margin-top: var(--space-xs);
+    line-height: 1.5;
+  }
+
+  .circular-meta {
+    display: flex;
+    gap: var(--space-lg);
+    margin-top: var(--space-sm);
+    font-size: var(--font-size-xs);
+    color: var(--theme-text-muted);
+  }
+
+  .circular-meta span,
+  .circular-meta time {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .circular-pdf {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c92a2a;
+    font-size: var(--font-size-xl);
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+  }
+
+  .circular-pdf:hover {
+    background: rgba(201, 42, 42, 0.08);
+    text-decoration: none;
+  }
+
+  .empty-state {
+    color: var(--theme-text-muted);
+    text-align: center;
+    padding: var(--space-xl);
+  }
+</style>

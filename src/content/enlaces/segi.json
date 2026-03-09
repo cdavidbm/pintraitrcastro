@@ -1,0 +1,9 @@
+{
+  "title": "SEGI - Direccionamiento Estrategico",
+  "description": "Sistema Estrategico de Gestion Institucional para el direccionamiento y seguimiento de la gestion de la Agencia ITRC.",
+  "url": "http://direccionamientoitrc.agenciaitrc.gov.co/deitrc/base/client?soa=4&lang=es",
+  "icon": "fa-diagram-project",
+  "category": "Sistema de Informacion",
+  "order": 2,
+  "display_mode": "visible"
+}

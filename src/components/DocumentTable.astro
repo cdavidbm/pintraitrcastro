@@ -1,0 +1,266 @@
+---
+interface DocumentItem {
+  title: string;
+  category: string;
+  dependencia: string;
+  date: string;
+  version?: string;
+  archivo?: string;
+}
+
+interface Props {
+  documents: DocumentItem[];
+}
+
+const { documents } = Astro.props;
+const basePath = import.meta.env.BASE_URL;
+---
+
+<div class="document-table-wrapper">
+  <div class="document-filters" id="document-filters">
+    <select class="document-filter-select" id="filter-category" aria-label="Filtrar por categoria">
+      <option value="">Todas las categorias</option>
+    </select>
+    <select class="document-filter-select" id="filter-dependencia" aria-label="Filtrar por dependencia">
+      <option value="">Todas las dependencias</option>
+    </select>
+    <input
+      type="search"
+      class="document-search"
+      id="document-search"
+      placeholder="Buscar documento..."
+      aria-label="Buscar documento"
+    />
+  </div>
+
+  <table class="document-table" role="table" aria-label="Tabla de documentos internos">
+    <thead>
+      <tr>
+        <th scope="col">Documento</th>
+        <th scope="col">Categoria</th>
+        <th scope="col">Dependencia</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="document-tbody">
+      {documents.map((doc) => {
+        const formattedDate = new Date(doc.date).toLocaleDateString('es-CO', {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+        return (
+          <tr data-category={doc.category} data-dependencia={doc.dependencia} data-title={doc.title.toLowerCase()}>
+            <td>
+              <div class="doc-title-cell">
+                <i class="fa-solid fa-file-lines doc-icon" aria-hidden="true"></i>
+                <div>
+                  <strong>{doc.title}</strong>
+                  {doc.version && <span class="doc-version">v{doc.version}</span>}
+                </div>
+              </div>
+            </td>
+            <td><span class="doc-badge">{doc.category}</span></td>
+            <td class="doc-dependencia">{doc.dependencia}</td>
+            <td class="doc-date">{formattedDate}</td>
+            <td>
+              {doc.archivo ? (
+                <a href={`${basePath}${doc.archivo.replace(/^\//, '')}`} class="doc-download" download>
+                  <i class="fa-solid fa-download" aria-hidden="true"></i> Descargar
+                </a>
+              ) : (
+                <span class="doc-no-file">Sin archivo</span>
+              )}
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+
+  {documents.length === 0 && (
+    <p class="empty-state">No hay documentos disponibles.</p>
+  )}
+</div>
+
+<script>
+  const tbody = document.getElementById('document-tbody');
+  const searchInput = document.getElementById('document-search') as HTMLInputElement;
+  const categorySelect = document.getElementById('filter-category') as HTMLSelectElement;
+  const depSelect = document.getElementById('filter-dependencia') as HTMLSelectElement;
+
+  if (tbody && searchInput && categorySelect && depSelect) {
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+    /* Populate filter options from data */
+    const categories = new Set<string>();
+    const dependencias = new Set<string>();
+    rows.forEach(row => {
+      categories.add(row.dataset.category ?? '');
+      dependencias.add(row.dataset.dependencia ?? '');
+    });
+
+    categories.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat;
+      categorySelect.appendChild(opt);
+    });
+
+    dependencias.forEach(dep => {
+      const opt = document.createElement('option');
+      opt.value = dep;
+      opt.textContent = dep;
+      depSelect.appendChild(opt);
+    });
+
+    function filterRows() {
+      const search = searchInput.value.toLowerCase();
+      const cat = categorySelect.value;
+      const dep = depSelect.value;
+
+      rows.forEach(row => {
+        const matchSearch = !search || (row.dataset.title ?? '').includes(search);
+        const matchCat = !cat || row.dataset.category === cat;
+        const matchDep = !dep || row.dataset.dependencia === dep;
+        row.style.display = matchSearch && matchCat && matchDep ? '' : 'none';
+      });
+    }
+
+    searchInput.addEventListener('input', filterRows);
+    categorySelect.addEventListener('change', filterRows);
+    depSelect.addEventListener('change', filterRows);
+  }
+</script>
+
+<style>
+  .document-table-wrapper {
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .document-filters {
+    display: flex;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--theme-border-light);
+    flex-wrap: wrap;
+  }
+
+  .document-filter-select,
+  .document-search {
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-sm);
+    background: var(--theme-bg);
+    color: var(--theme-text-primary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+  }
+
+  .document-search {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .document-filter-select:focus,
+  .document-search:focus {
+    outline: none;
+    border-color: var(--theme-accent);
+  }
+
+  .document-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+  }
+
+  .document-table th {
+    text-align: left;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--theme-bg);
+    font-weight: 600;
+    color: var(--theme-text-secondary);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--theme-border);
+  }
+
+  .document-table td {
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--theme-border-light);
+    vertical-align: middle;
+  }
+
+  .document-table tbody tr:hover {
+    background: var(--theme-bg);
+  }
+
+  .doc-title-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .doc-icon {
+    color: var(--theme-accent-gold);
+    font-size: var(--font-size-lg);
+  }
+
+  .doc-version {
+    font-size: var(--font-size-xs);
+    color: var(--theme-text-muted);
+    margin-left: var(--space-xs);
+  }
+
+  .doc-badge {
+    font-size: var(--font-size-xs);
+    background: rgba(9, 67, 181, 0.08);
+    color: var(--theme-accent);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  .doc-dependencia {
+    color: var(--theme-text-secondary);
+  }
+
+  .doc-date {
+    white-space: nowrap;
+    color: var(--theme-text-secondary);
+  }
+
+  .doc-download {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--theme-accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .doc-download:hover {
+    text-decoration: underline;
+  }
+
+  .doc-no-file {
+    color: var(--theme-text-muted);
+    font-size: var(--font-size-xs);
+  }
+
+  .empty-state {
+    padding: var(--space-xl);
+    text-align: center;
+    color: var(--theme-text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .document-table th:nth-child(3),
+    .document-table td:nth-child(3) {
+      display: none;
+    }
+  }
+</style>

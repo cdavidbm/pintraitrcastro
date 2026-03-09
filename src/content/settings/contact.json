@@ -1,0 +1,12 @@
+{
+  "helpdesk": {
+    "name": "Mesa de Ayuda TI",
+    "extension": "100",
+    "email": "soporte@itrc.gov.co"
+  },
+  "hr": {
+    "name": "Talento Humano",
+    "extension": "200",
+    "email": "talentohumano@itrc.gov.co"
+  }
+}

@@ -1,0 +1,90 @@
+---
+interface Props {
+  title: string;
+  date: string;
+  category: string;
+  excerpt: string;
+  href: string;
+  featured?: boolean;
+}
+
+const { title, date, category, excerpt, href, featured = false } = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString('es-CO', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+---
+
+<article class:list={['anuncio-card', { featured }]}>
+  <div class="anuncio-meta">
+    <span class="anuncio-category">{category}</span>
+    <time class="anuncio-date" datetime={date}>{formattedDate}</time>
+  </div>
+  <h4 class="anuncio-title">
+    <a href={href}>{title}</a>
+  </h4>
+  <p class="anuncio-excerpt">{excerpt}</p>
+</article>
+
+<style>
+  .anuncio-card {
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--theme-border-light);
+  }
+
+  .anuncio-card:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .anuncio-card.featured {
+    border-left: 3px solid var(--theme-accent-gold);
+    padding-left: var(--space-md);
+  }
+
+  .anuncio-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+  }
+
+  .anuncio-category {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--theme-accent);
+    background: rgba(9, 67, 181, 0.08);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-sm);
+  }
+
+  .anuncio-date {
+    font-size: var(--font-size-xs);
+    color: var(--theme-text-muted);
+  }
+
+  .anuncio-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+  }
+
+  .anuncio-title a {
+    color: var(--theme-text-primary);
+    text-decoration: none;
+  }
+
+  .anuncio-title a:hover {
+    color: var(--theme-accent);
+    text-decoration: underline;
+  }
+
+  .anuncio-excerpt {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    line-height: 1.5;
+  }
+</style>

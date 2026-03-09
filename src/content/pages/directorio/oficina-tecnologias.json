@@ -1,0 +1,19 @@
+{
+  "title": "Oficina de Tecnologias de la Informacion",
+  "order": 8,
+  "funcionarios": [
+    {
+      "nombre": "Ing. Roberto Sanchez Diaz",
+      "cargo": "Jefe de Oficina TI",
+      "email": "tecnologia@itrc.gov.co",
+      "extension": "300"
+    },
+    {
+      "nombre": "Laura Milena Torres",
+      "cargo": "Profesional de Soporte",
+      "email": "soporte@itrc.gov.co",
+      "extension": "301"
+    }
+  ],
+  "display_mode": "visible"
+}

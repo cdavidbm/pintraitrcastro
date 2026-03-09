@@ -1,0 +1,9 @@
+{
+  "title": "NEON",
+  "description": "Sistema NEON para gestion de procesos internos de la Agencia ITRC.",
+  "url": "http://192.168.82.7:8080/neon/public/usuario.do?mtd=preLogin",
+  "icon": "fa-server",
+  "category": "Herramienta Interna",
+  "order": 6,
+  "display_mode": "visible"
+}

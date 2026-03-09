@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "label": "SIIGI",
+      "icon": "fa-folder-tree",
+      "url": "http://expedientedigital.agenciaitrc.gov.co/sigii/",
+      "color": "#0943b5"
+    },
+    {
+      "label": "SEGI",
+      "icon": "fa-diagram-project",
+      "url": "http://direccionamientoitrc.agenciaitrc.gov.co/deitrc/base/client?soa=4&lang=es",
+      "color": "#2b8a3e"
+    },
+    {
+      "label": "Nomina",
+      "icon": "fa-money-check-dollar",
+      "url": "http://nomina.agenciaitrc.gov.co/m4richwebnet.html?TYPE=PNET8",
+      "color": "#7048e8"
+    },
+    {
+      "label": "Mesa de Servicios",
+      "icon": "fa-headset",
+      "url": "https://mesadeayuda.agenciaitrc.gov.co/glpi/index.php?noAUTO=1",
+      "color": "#e67700"
+    },
+    {
+      "label": "SIGEP",
+      "icon": "fa-id-card",
+      "url": "http://empleados.agenciaitrc.gov.co:81/",
+      "color": "#c92a2a"
+    },
+    {
+      "label": "NEON",
+      "icon": "fa-server",
+      "url": "http://192.168.82.7:8080/neon/public/usuario.do?mtd=preLogin",
+      "color": "#002147"
+    },
+    {
+      "label": "Correo Institucional",
+      "icon": "fa-envelope",
+      "url": "https://outlook.office365.com",
+      "color": "#0078d4"
+    },
+    {
+      "label": "ITRC Web",
+      "icon": "fa-globe",
+      "url": "https://www.itrc.gov.co",
+      "color": "#b38b40"
+    }
+  ]
+}

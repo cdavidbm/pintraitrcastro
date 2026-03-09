@@ -1,0 +1,67 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+import AnuncioCard from '@components/AnuncioCard.astro';
+
+interface AnuncioFrontmatter {
+  title: string;
+  date: string;
+  category: string;
+  excerpt: string;
+  featured?: boolean;
+  display_mode: string;
+}
+
+const allPosts = import.meta.glob<{ frontmatter: AnuncioFrontmatter }>('../../content/anuncios/*.md', { eager: true });
+
+const notijuridicos = Object.entries(allPosts)
+  .map(([path, mod]) => {
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+    return { slug, ...mod.frontmatter };
+  })
+  .filter((a) => a.display_mode === 'visible' && a.category === 'Notijuridico')
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<SectionPage title="Notijuridico" breadcrumbs={[{ label: 'Prensa', href: '/prensa' }, { label: 'Notijuridico' }]}>
+  <p class="section-intro">
+    Boletin juridico de la Agencia ITRC con informacion relevante sobre novedades normativas, jurisprudenciales y de interes para los servidores publicos.
+  </p>
+
+  <div class="noticias-list">
+    {notijuridicos.length > 0 ? (
+      notijuridicos.map((n) => (
+        <AnuncioCard
+          title={n.title}
+          date={n.date}
+          category={n.category}
+          excerpt={n.excerpt}
+          slug={n.slug}
+          featured={n.featured}
+        />
+      ))
+    ) : (
+      <p class="empty-state">No hay publicaciones de Notijuridico disponibles.</p>
+    )}
+  </div>
+</SectionPage>
+
+<style>
+  .section-intro {
+    color: var(--theme-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    max-width: 72ch;
+  }
+
+  .noticias-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .empty-state {
+    color: var(--theme-text-muted);
+    text-align: center;
+    padding: var(--space-xl);
+  }
+</style>

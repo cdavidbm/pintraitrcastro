@@ -1,0 +1,80 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+---
+
+<SectionPage title="Mision, Vision y Proposito" breadcrumbs={[{ label: 'Agencia', href: '/agencia' }, { label: 'Mision, Vision y Proposito' }]}>
+  <div class="content-sections">
+    <section class="content-block">
+      <div class="content-icon"><i class="fa-solid fa-bullseye" aria-hidden="true"></i></div>
+      <h2>Mision</h2>
+      <p>
+        Ejercer vigilancia sobre la gestion tributaria, aduanera y cambiaria que adelanta la DIAN,
+        asi como sobre las actuaciones de los obligados tributarios, los agentes aduaneros y cambiarios,
+        con el fin de proteger los recursos publicos, defender los derechos de los contribuyentes
+        y promover la transparencia fiscal.
+      </p>
+    </section>
+
+    <section class="content-block">
+      <div class="content-icon"><i class="fa-solid fa-eye" aria-hidden="true"></i></div>
+      <h2>Vision</h2>
+      <p>
+        Ser reconocida como la entidad lider en la vigilancia y control de la gestion tributaria,
+        aduanera y cambiaria del pais, fundamentada en principios de eficiencia, transparencia
+        y servicio al ciudadano.
+      </p>
+    </section>
+
+    <section class="content-block">
+      <div class="content-icon"><i class="fa-solid fa-compass" aria-hidden="true"></i></div>
+      <h2>Proposito</h2>
+      <p>
+        Contribuir al fortalecimiento institucional del sistema tributario colombiano,
+        garantizando la correcta aplicacion de las normas fiscales y la proteccion
+        de los derechos de los contribuyentes y usuarios del servicio aduanero y cambiario.
+      </p>
+    </section>
+  </div>
+</SectionPage>
+
+<style>
+  .content-sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    max-width: 72ch;
+  }
+
+  .content-block {
+    padding: var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--theme-accent);
+  }
+
+  .content-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(9, 67, 181, 0.08);
+    color: var(--theme-accent);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .content-block h2 {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .content-block p {
+    color: var(--theme-text-secondary);
+    line-height: 1.7;
+  }
+</style>

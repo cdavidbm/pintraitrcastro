@@ -1,0 +1,96 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+---
+
+<SectionPage title="Sistema Integrado de Gestion (SIG)" breadcrumbs={[{ label: 'SIG' }]}>
+  <p class="section-intro">
+    El Sistema Integrado de Gestion de la Agencia ITRC articula los diferentes sistemas de gestion institucional
+    para garantizar la eficiencia, eficacia y efectividad en el cumplimiento de la mision institucional.
+  </p>
+
+  <div class="sig-grid">
+    <div class="sig-card">
+      <div class="sig-icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></div>
+      <h3>Planeacion Institucional</h3>
+      <p>Plan Estrategico Institucional, Plan de Accion, planes operativos y metas de gestion.</p>
+    </div>
+    <div class="sig-card">
+      <div class="sig-icon"><i class="fa-solid fa-arrows-spin" aria-hidden="true"></i></div>
+      <h3>Gestion por Procesos</h3>
+      <p>Mapa de procesos, caracterizaciones, procedimientos y formatos institucionales.</p>
+    </div>
+    <div class="sig-card">
+      <div class="sig-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></div>
+      <h3>Indicadores</h3>
+      <p>Indicadores de gestion, tableros de control y seguimiento a metas institucionales.</p>
+    </div>
+    <div class="sig-card">
+      <div class="sig-icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></div>
+      <h3>Gestion de Riesgos</h3>
+      <p>Mapa de riesgos institucional, planes de tratamiento y monitoreo.</p>
+    </div>
+    <div class="sig-card">
+      <div class="sig-icon"><i class="fa-solid fa-medal" aria-hidden="true"></i></div>
+      <h3>Gestion de Calidad</h3>
+      <p>Politicas de calidad, auditorias internas y planes de mejoramiento continuo.</p>
+    </div>
+    <div class="sig-card">
+      <div class="sig-icon"><i class="fa-solid fa-book" aria-hidden="true"></i></div>
+      <h3>Gestion Documental</h3>
+      <p>Politicas de gestion documental, tablas de retencion y cuadros de clasificacion.</p>
+    </div>
+  </div>
+</SectionPage>
+
+<style>
+  .section-intro {
+    color: var(--theme-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    max-width: 72ch;
+  }
+
+  .sig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .sig-card {
+    padding: var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    transition: box-shadow var(--transition-fast);
+  }
+
+  .sig-card:hover {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .sig-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(9, 67, 181, 0.08);
+    color: var(--theme-accent);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .sig-card h3 {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .sig-card p {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    line-height: 1.5;
+  }
+</style>

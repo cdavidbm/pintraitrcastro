@@ -1,0 +1,165 @@
+---
+interface Props {
+  pageTitle?: string;
+}
+
+const { pageTitle } = Astro.props;
+---
+
+<header class="app-header" role="banner">
+  <button
+    class="mobile-menu-toggle"
+    id="mobile-menu-toggle"
+    aria-label="Abrir menu de navegacion"
+    type="button"
+  >
+    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+  </button>
+
+  <div class="header-search">
+    <i class="fa-solid fa-magnifying-glass header-search-icon" aria-hidden="true"></i>
+    <input
+      type="search"
+      class="header-search-input"
+      placeholder="Buscar documentos, funcionarios, noticias..."
+      aria-label="Buscar en la intranet"
+    />
+  </div>
+
+  <div class="header-actions">
+    <button
+      class="header-action-btn"
+      id="theme-toggle"
+      aria-label="Cambiar tema"
+      type="button"
+    >
+      <i class="fa-solid fa-moon" aria-hidden="true"></i>
+    </button>
+  </div>
+</header>
+
+<script>
+  /* Theme toggle */
+  const themeToggle = document.getElementById('theme-toggle');
+  const THEME_KEY = 'intranet-theme';
+
+  function updateThemeIcon() {
+    const isDark = document.documentElement.classList.contains('theme-dark');
+    const icon = themeToggle?.querySelector('i');
+    if (icon) {
+      icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+    themeToggle?.setAttribute('aria-label', isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+  }
+
+  updateThemeIcon();
+
+  themeToggle?.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('theme-dark');
+    localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+    updateThemeIcon();
+  });
+
+  /* Mobile menu toggle */
+  const mobileToggle = document.getElementById('mobile-menu-toggle');
+  const sidebar = document.getElementById('sidebar');
+
+  mobileToggle?.addEventListener('click', () => {
+    sidebar?.classList.toggle('mobile-open');
+  });
+</script>
+
+<style>
+  .app-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-xl);
+    background: var(--theme-bg-header);
+    border-bottom: 1px solid var(--theme-border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--theme-text-primary);
+    font-size: var(--font-size-xl);
+    padding: var(--space-sm);
+  }
+
+  .header-search {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+  }
+
+  .header-search-icon {
+    position: absolute;
+    left: var(--space-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--theme-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .header-search-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-sm) var(--space-sm) var(--space-xl);
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-md);
+    background: var(--theme-bg);
+    color: var(--theme-text-primary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    transition: border-color var(--transition-fast);
+  }
+
+  .header-search-input:focus {
+    outline: none;
+    border-color: var(--theme-accent);
+    box-shadow: 0 0 0 2px rgba(9, 67, 181, 0.15);
+  }
+
+  .header-search-input::placeholder {
+    color: var(--theme-text-muted);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .header-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--theme-text-secondary);
+    font-size: var(--font-size-lg);
+    transition: background var(--transition-fast), color var(--transition-fast);
+  }
+
+  .header-action-btn:hover {
+    background: var(--theme-bg);
+    color: var(--theme-text-primary);
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: flex;
+    }
+
+    .app-header {
+      padding: var(--space-sm) var(--space-md);
+    }
+  }
+</style>

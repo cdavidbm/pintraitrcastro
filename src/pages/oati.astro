@@ -1,0 +1,100 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+---
+
+<SectionPage title="OATI - Oficina Asesora de Tecnologias de la Informacion" breadcrumbs={[{ label: 'OATI' }]}>
+  <p class="section-intro">
+    La Oficina Asesora de Tecnologias de la Informacion (OATI) es responsable de la gestion tecnologica,
+    la seguridad de la informacion y el soporte de los sistemas de informacion de la Agencia ITRC.
+  </p>
+
+  <div class="oati-grid">
+    <a href="/aplicaciones" class="oati-card">
+      <div class="oati-icon"><i class="fa-solid fa-table-cells" aria-hidden="true"></i></div>
+      <h3>Aplicaciones</h3>
+      <p>Acceso a los sistemas de informacion y aplicativos institucionales.</p>
+    </a>
+    <div class="oati-card">
+      <div class="oati-icon"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></div>
+      <h3>Seguridad de la Informacion</h3>
+      <p>Politicas, lineamientos y buenas practicas de seguridad informatica.</p>
+    </div>
+    <div class="oati-card">
+      <div class="oati-icon"><i class="fa-solid fa-headset" aria-hidden="true"></i></div>
+      <h3>Mesa de Servicios TI</h3>
+      <p>Soporte tecnico, reporte de incidentes y solicitudes tecnologicas.</p>
+    </div>
+    <div class="oati-card">
+      <div class="oati-icon"><i class="fa-solid fa-server" aria-hidden="true"></i></div>
+      <h3>Infraestructura</h3>
+      <p>Gestion de redes, servidores y plataformas tecnologicas institucionales.</p>
+    </div>
+    <div class="oati-card">
+      <div class="oati-icon"><i class="fa-solid fa-cloud" aria-hidden="true"></i></div>
+      <h3>Gobierno Digital</h3>
+      <p>Politica de Gobierno Digital y transformacion digital de la entidad.</p>
+    </div>
+    <div class="oati-card">
+      <div class="oati-icon"><i class="fa-solid fa-database" aria-hidden="true"></i></div>
+      <h3>Gestion de Datos</h3>
+      <p>Arquitectura de datos, interoperabilidad y datos abiertos.</p>
+    </div>
+  </div>
+</SectionPage>
+
+<style>
+  .section-intro {
+    color: var(--theme-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    max-width: 72ch;
+  }
+
+  .oati-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .oati-card {
+    display: block;
+    padding: var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  a.oati-card:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--theme-accent);
+  }
+
+  .oati-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(9, 67, 181, 0.08);
+    color: var(--theme-accent);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .oati-card h3 {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .oati-card p {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    line-height: 1.5;
+  }
+</style>

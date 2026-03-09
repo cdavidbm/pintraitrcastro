@@ -1,0 +1,68 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const basePath = import.meta.env.BASE_URL;
+---
+
+<nav class="breadcrumb" aria-label="Ruta de navegacion">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-item">
+      <a href={basePath}>
+        <i class="fa-solid fa-house" aria-hidden="true"></i>
+        <span class="sr-only">Inicio</span>
+      </a>
+    </li>
+    {items.map((item, index) => (
+      <li class="breadcrumb-item" aria-current={index === items.length - 1 ? 'page' : undefined}>
+        <i class="fa-solid fa-chevron-right breadcrumb-separator" aria-hidden="true"></i>
+        {item.href && index < items.length - 1 ? (
+          <a href={`${basePath}${item.href.replace(/^\//, '')}`}>{item.label}</a>
+        ) : (
+          <span>{item.label}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .breadcrumb {
+    margin-bottom: var(--space-lg);
+  }
+
+  .breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    list-style: none;
+    font-size: var(--font-size-sm);
+  }
+
+  .breadcrumb-item a {
+    color: var(--theme-text-secondary);
+    text-decoration: none;
+  }
+
+  .breadcrumb-item a:hover {
+    color: var(--theme-accent);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-item[aria-current="page"] span {
+    color: var(--theme-text-primary);
+    font-weight: 600;
+  }
+
+  .breadcrumb-separator {
+    font-size: var(--font-size-xs);
+    color: var(--theme-text-muted);
+  }
+</style>

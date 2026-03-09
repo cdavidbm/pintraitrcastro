@@ -1,0 +1,50 @@
+import { DISPLAY_MODE, dateField, fileAttachment } from '../templates/fields.js';
+
+export const documentosCollection = {
+  name: 'documentos',
+  label: 'Documentos Internos',
+  label_singular: 'Documento',
+  icon: 'folder',
+  folder: 'src/content/pages/documentos',
+  create: true,
+  slug: '{{slug}}',
+  extension: 'json',
+  fields: [
+    { name: 'title', label: 'Titulo del documento', widget: 'string' },
+    {
+      name: 'category',
+      label: 'Categoria',
+      widget: 'select',
+      options: [
+        'Manual de procedimientos',
+        'Formato',
+        'Plantilla',
+        'Acta de reunion',
+        'Resolucion',
+        'Otro',
+      ],
+    },
+    {
+      name: 'dependencia',
+      label: 'Dependencia',
+      widget: 'select',
+      options: [
+        'Despacho del Inspector General',
+        'Secretaria General',
+        'Subdireccion de Inspeccion',
+        'Subdireccion Administrativa y Financiera',
+        'Oficina Asesora Juridica',
+        'Oficina Asesora de Planeacion',
+        'Oficina de Control Interno',
+        'Oficina de Tecnologias de la Informacion',
+        'General',
+      ],
+      default: 'General',
+    },
+    dateField('date', 'Fecha de publicacion'),
+    { name: 'version', label: 'Version', widget: 'string', required: false },
+    fileAttachment('archivo', 'Archivo'),
+    { name: 'description', label: 'Descripcion', widget: 'text', required: false },
+    DISPLAY_MODE,
+  ],
+};

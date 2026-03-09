@@ -1,0 +1,9 @@
+{
+  "title": "SIIGI - Expediente Digital",
+  "description": "Sistema Integrado de Informacion y Gestion Institucional para el manejo de expedientes digitales de la Agencia ITRC.",
+  "url": "http://expedientedigital.agenciaitrc.gov.co/sigii/",
+  "icon": "fa-folder-tree",
+  "category": "Sistema de Informacion",
+  "order": 1,
+  "display_mode": "visible"
+}

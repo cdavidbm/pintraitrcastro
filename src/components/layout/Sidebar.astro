@@ -1,0 +1,237 @@
+---
+import navigation from '@content/settings/navigation.json';
+
+interface NavItem {
+  label: string;
+  href: string;
+  icon: string;
+  children?: NavItem[];
+}
+
+const basePath = import.meta.env.BASE_URL;
+const currentPath = Astro.url.pathname;
+const navItems = navigation.items as NavItem[];
+
+function isActive(href: string): boolean {
+  const fullHref = basePath + href.replace(/^\//, '');
+  return currentPath === fullHref || currentPath.startsWith(fullHref + '/');
+}
+---
+
+<nav class="sidebar" id="sidebar" aria-label="Navegacion principal">
+  <div class="sidebar-brand">
+    <img
+      src={`${basePath}uploads/logo-itrc.svg`}
+      alt="Logo ITRC"
+      class="sidebar-logo"
+      width="36"
+      height="36"
+    />
+    <span class="sidebar-brand-text">Intranet ITRC</span>
+  </div>
+
+  <ul class="sidebar-nav" role="menubar">
+    {navItems.map((item) => (
+      <li class:list={['sidebar-nav-item', { active: isActive(item.href) }]} role="none">
+        <a href={`${basePath}${item.href.replace(/^\//, '')}`} class="sidebar-nav-link" role="menuitem">
+          <i class={`fa-solid ${item.icon}`} aria-hidden="true"></i>
+          <span class="sidebar-nav-label">{item.label}</span>
+        </a>
+        {item.children && item.children.length > 0 && (
+          <ul class="sidebar-subnav" role="menu">
+            {item.children.map((child) => (
+              <li class:list={['sidebar-subnav-item', { active: isActive(child.href) }]} role="none">
+                <a href={`${basePath}${child.href.replace(/^\//, '')}`} class="sidebar-subnav-link" role="menuitem">
+                  <i class={`fa-solid ${child.icon}`} aria-hidden="true"></i>
+                  <span>{child.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))}
+  </ul>
+
+  <button
+    class="sidebar-toggle"
+    id="sidebar-toggle"
+    aria-label="Colapsar menu lateral"
+    type="button"
+  >
+    <i class="fa-solid fa-angles-left" aria-hidden="true"></i>
+  </button>
+</nav>
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const toggle = document.getElementById('sidebar-toggle');
+  const appMain = document.getElementById('app-main');
+  const STORAGE_KEY = 'intranet-sidebar-collapsed';
+
+  function applySidebarState(collapsed: boolean) {
+    sidebar?.classList.toggle('collapsed', collapsed);
+    appMain?.classList.toggle('sidebar-collapsed', collapsed);
+    const icon = toggle?.querySelector('i');
+    if (icon) {
+      icon.className = collapsed ? 'fa-solid fa-angles-right' : 'fa-solid fa-angles-left';
+    }
+    toggle?.setAttribute('aria-label', collapsed ? 'Expandir menu lateral' : 'Colapsar menu lateral');
+  }
+
+  const savedState = localStorage.getItem(STORAGE_KEY) === 'true';
+  applySidebarState(savedState);
+
+  toggle?.addEventListener('click', () => {
+    const isCollapsed = sidebar?.classList.contains('collapsed');
+    const newState = !isCollapsed;
+    localStorage.setItem(STORAGE_KEY, String(newState));
+    applySidebarState(newState);
+  });
+</script>
+
+<style>
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--theme-bg-sidebar);
+    color: var(--theme-text-sidebar);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: width var(--transition-base);
+    overflow-x: hidden;
+  }
+
+  .sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+  }
+
+  .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-lg) var(--space-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+  }
+
+  .sidebar-logo {
+    flex-shrink: 0;
+  }
+
+  .sidebar-brand-text {
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    color: var(--theme-text-sidebar-active);
+    overflow: hidden;
+  }
+
+  .sidebar.collapsed .sidebar-brand-text {
+    opacity: 0;
+    width: 0;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    list-style: none;
+    padding: var(--space-sm) 0;
+    overflow-y: auto;
+  }
+
+  .sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    color: var(--theme-text-sidebar);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    margin: 2px var(--space-sm);
+    transition: background var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  .sidebar-nav-link:hover {
+    background: var(--theme-bg-sidebar-hover);
+    text-decoration: none;
+    color: var(--theme-text-sidebar-active);
+  }
+
+  .sidebar-nav-item.active > .sidebar-nav-link {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--theme-text-sidebar-active);
+    font-weight: 600;
+  }
+
+  .sidebar-nav-link i {
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .sidebar.collapsed .sidebar-nav-label,
+  .sidebar.collapsed .sidebar-subnav {
+    display: none;
+  }
+
+  .sidebar-subnav {
+    list-style: none;
+    padding-left: var(--space-xl);
+  }
+
+  .sidebar-subnav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-md);
+    color: var(--theme-text-sidebar);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  .sidebar-subnav-link:hover {
+    background: var(--theme-bg-sidebar-hover);
+    text-decoration: none;
+  }
+
+  .sidebar-subnav-item.active > .sidebar-subnav-link {
+    color: var(--theme-text-sidebar-active);
+    font-weight: 600;
+  }
+
+  .sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    background: none;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--theme-text-sidebar);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+  }
+
+  .sidebar-toggle:hover {
+    color: var(--theme-text-sidebar-active);
+  }
+
+  /* Mobile overlay */
+  @media (max-width: 768px) {
+    .sidebar {
+      transform: translateX(-100%);
+    }
+
+    .sidebar.mobile-open {
+      transform: translateX(0);
+    }
+  }
+</style>

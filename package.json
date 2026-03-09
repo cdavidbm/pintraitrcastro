@@ -1,0 +1,19 @@
+{
+  "name": "intranet-itrc",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "cms:generate": "node cms/generate.js",
+    "dev": "npm run cms:generate && astro dev",
+    "build": "npm run cms:generate && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.17.1"
+  },
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

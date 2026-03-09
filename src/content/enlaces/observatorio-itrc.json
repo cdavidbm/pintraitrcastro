@@ -1,0 +1,9 @@
+{
+  "title": "Observatorio ITRC",
+  "description": "Portal del Observatorio de la Agencia ITRC para consulta de informes, estadisticas y analisis.",
+  "url": "https://www.itrc.gov.co/observatorio/",
+  "icon": "fa-chart-line",
+  "category": "Portal Externo",
+  "order": 7,
+  "display_mode": "visible"
+}

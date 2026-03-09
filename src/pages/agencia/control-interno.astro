@@ -1,0 +1,76 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+---
+
+<SectionPage title="Sistema de Control Interno" breadcrumbs={[{ label: 'Agencia', href: '/agencia' }, { label: 'Control Interno' }]}>
+  <p class="section-intro">
+    Informacion sobre el Sistema de Control Interno de la Agencia del Inspector General de Tributos, Rentas y Contribuciones Parafiscales.
+  </p>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <div class="info-icon"><i class="fa-solid fa-shield-check" aria-hidden="true"></i></div>
+      <h3>Modelo Integrado de Planeacion y Gestion (MIPG)</h3>
+      <p>Marco de referencia para dirigir, planear, ejecutar, hacer seguimiento, evaluar y controlar la gestion institucional.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-icon"><i class="fa-solid fa-chart-bar" aria-hidden="true"></i></div>
+      <h3>Seguimiento y Evaluacion</h3>
+      <p>Planes de mejoramiento, indicadores de gestion e informes de control interno.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-icon"><i class="fa-solid fa-file-contract" aria-hidden="true"></i></div>
+      <h3>Informes de Gestion</h3>
+      <p>Reportes periodicos sobre la gestion del sistema de control interno de la entidad.</p>
+    </div>
+  </div>
+</SectionPage>
+
+<style>
+  .section-intro {
+    color: var(--theme-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    max-width: 72ch;
+  }
+
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .info-card {
+    padding: var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    border-top: 3px solid var(--theme-accent);
+  }
+
+  .info-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(9, 67, 181, 0.08);
+    color: var(--theme-accent);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .info-card h3 {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .info-card p {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    line-height: 1.5;
+  }
+</style>

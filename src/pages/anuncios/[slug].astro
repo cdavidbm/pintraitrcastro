@@ -1,0 +1,125 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+
+export async function getStaticPaths() {
+  const files = import.meta.glob<{
+    frontmatter: {
+      title: string;
+      date: string;
+      category: string;
+      excerpt: string;
+      featured: boolean;
+      display_mode: string;
+    };
+    compiledContent: () => string;
+  }>('../../content/anuncios/*.md', { eager: true });
+
+  return Object.entries(files).map(([path, mod]) => {
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+    return {
+      params: { slug },
+      props: {
+        title: mod.frontmatter.title,
+        date: mod.frontmatter.date,
+        category: mod.frontmatter.category,
+        content: mod.compiledContent(),
+      },
+    };
+  });
+}
+
+interface Props {
+  title: string;
+  date: string;
+  category: string;
+  content: string;
+}
+
+const { title, date, category, content } = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString('es-CO', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<SectionPage
+  title={title}
+  breadcrumbs={[
+    { label: 'Anuncios', href: '/anuncios' },
+    { label: title },
+  ]}
+>
+  <article class="anuncio-detail">
+    <div class="anuncio-detail-meta">
+      <span class="anuncio-detail-category">{category}</span>
+      <time datetime={date}>{formattedDate}</time>
+    </div>
+    <div class="anuncio-detail-content" set:html={content} />
+  </article>
+</SectionPage>
+
+<style>
+  .anuncio-detail {
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+  }
+
+  .anuncio-detail-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--theme-border-light);
+  }
+
+  .anuncio-detail-category {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--theme-accent);
+    background: rgba(9, 67, 181, 0.08);
+    padding: 2px var(--space-sm);
+    border-radius: var(--radius-sm);
+  }
+
+  .anuncio-detail-meta time {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+  }
+
+  .anuncio-detail-content {
+    line-height: 1.8;
+    color: var(--theme-text-primary);
+  }
+
+  .anuncio-detail-content :global(h2) {
+    font-size: var(--font-size-xl);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+    color: var(--theme-text-primary);
+  }
+
+  .anuncio-detail-content :global(ul),
+  .anuncio-detail-content :global(ol) {
+    padding-left: var(--space-xl);
+    margin: var(--space-md) 0;
+  }
+
+  .anuncio-detail-content :global(li) {
+    margin-bottom: var(--space-xs);
+  }
+
+  .anuncio-detail-content :global(strong) {
+    font-weight: 600;
+  }
+
+  .anuncio-detail-content :global(p) {
+    margin-bottom: var(--space-md);
+  }
+</style>

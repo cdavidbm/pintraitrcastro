@@ -1,0 +1,211 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+
+interface Capacitacion {
+  title: string;
+  description: string;
+  date: string;
+  type: string;
+  modality: string;
+  video_url?: string;
+  material_url?: string;
+  instructor?: string;
+  display_mode: string;
+}
+
+const capFiles = import.meta.glob<{ default: Capacitacion }>(
+  '../content/capacitaciones/*.json',
+  { eager: true }
+);
+
+const capacitaciones = Object.values(capFiles)
+  .map((mod) => mod.default)
+  .filter((c) => c.display_mode === 'visible')
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const typeIcons: Record<string, string> = {
+  Curso: 'fa-book-open',
+  Taller: 'fa-hammer',
+  Webinar: 'fa-video',
+  Guia: 'fa-file-lines',
+  Video: 'fa-play-circle',
+};
+
+const modalityBadge: Record<string, string> = {
+  Presencial: 'var(--theme-success)',
+  Virtual: 'var(--brand-blue)',
+  Autoestudio: 'var(--theme-warning)',
+};
+---
+
+<SectionPage title="Capacitaciones" breadcrumbs={[{ label: 'Capacitaciones' }]}>
+  <div class="cap-grid">
+    {capacitaciones.length > 0 ? (
+      capacitaciones.map((cap) => {
+        const formattedDate = new Date(cap.date).toLocaleDateString('es-CO', {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+        return (
+          <article class="cap-card">
+            <div class="cap-card-icon">
+              <i class={`fa-solid ${typeIcons[cap.type] ?? 'fa-book-open'}`} aria-hidden="true"></i>
+            </div>
+            <div class="cap-card-body">
+              <div class="cap-card-badges">
+                <span class="cap-type">{cap.type}</span>
+                <span class="cap-modality" style={`color: ${modalityBadge[cap.modality] ?? 'var(--theme-text-secondary)'}`}>
+                  {cap.modality}
+                </span>
+              </div>
+              <h3 class="cap-title">{cap.title}</h3>
+              <p class="cap-desc">{cap.description}</p>
+              {cap.instructor && (
+                <p class="cap-instructor">
+                  <i class="fa-solid fa-user" aria-hidden="true"></i> {cap.instructor}
+                </p>
+              )}
+              <div class="cap-footer">
+                <time datetime={cap.date}>{formattedDate}</time>
+                <div class="cap-actions">
+                  {cap.video_url && (
+                    <a href={cap.video_url} target="_blank" rel="noopener noreferrer" class="cap-link">
+                      <i class="fa-solid fa-play" aria-hidden="true"></i> Ver video
+                    </a>
+                  )}
+                  {cap.material_url && (
+                    <a href={cap.material_url} class="cap-link" download>
+                      <i class="fa-solid fa-download" aria-hidden="true"></i> Material
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </article>
+        );
+      })
+    ) : (
+      <p class="empty-state">No hay capacitaciones disponibles.</p>
+    )}
+  </div>
+</SectionPage>
+
+<style>
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .cap-card {
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    transition: box-shadow var(--transition-fast);
+  }
+
+  .cap-card:hover {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cap-card-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(9, 67, 181, 0.08);
+    color: var(--theme-accent);
+    font-size: var(--font-size-lg);
+  }
+
+  .cap-card-body {
+    flex: 1;
+  }
+
+  .cap-card-badges {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+  }
+
+  .cap-type {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--theme-accent);
+    background: rgba(9, 67, 181, 0.08);
+    padding: 1px var(--space-sm);
+    border-radius: var(--radius-sm);
+  }
+
+  .cap-modality {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+  }
+
+  .cap-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .cap-desc {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    line-height: 1.5;
+  }
+
+  .cap-instructor {
+    font-size: var(--font-size-xs);
+    color: var(--theme-text-muted);
+    margin-top: var(--space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .cap-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--theme-border-light);
+  }
+
+  .cap-footer time {
+    font-size: var(--font-size-xs);
+    color: var(--theme-text-muted);
+  }
+
+  .cap-actions {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .cap-link {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--theme-accent);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .cap-link:hover {
+    text-decoration: underline;
+  }
+
+  .empty-state {
+    color: var(--theme-text-muted);
+    text-align: center;
+    padding: var(--space-xl);
+    grid-column: 1 / -1;
+  }
+</style>

@@ -1,0 +1,9 @@
+{
+  "title": "SIGEP - Portal Empleados",
+  "description": "Portal de empleados para la gestion de hoja de vida, declaracion de bienes y rentas en el Sistema de Informacion y Gestion del Empleo Publico.",
+  "url": "http://empleados.agenciaitrc.gov.co:81/",
+  "icon": "fa-id-card",
+  "category": "Sistema de Informacion",
+  "order": 5,
+  "display_mode": "visible"
+}

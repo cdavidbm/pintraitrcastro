@@ -1,0 +1,113 @@
+{
+  "items": [
+    {
+      "label": "Inicio",
+      "href": "/",
+      "icon": "fa-house"
+    },
+    {
+      "label": "Agencia",
+      "href": "/agencia",
+      "icon": "fa-building-columns",
+      "children": [
+        {
+          "label": "Mision, Vision y Proposito",
+          "href": "/agencia/mision-vision",
+          "icon": "fa-bullseye"
+        },
+        {
+          "label": "Directorio de Servidores",
+          "href": "/directorio",
+          "icon": "fa-address-book"
+        },
+        {
+          "label": "Organigrama",
+          "href": "/agencia/organigrama",
+          "icon": "fa-sitemap"
+        },
+        {
+          "label": "Resoluciones",
+          "href": "/agencia/resoluciones",
+          "icon": "fa-gavel"
+        },
+        {
+          "label": "Normativa Aplicable",
+          "href": "/agencia/normativa",
+          "icon": "fa-scale-balanced"
+        },
+        {
+          "label": "Sistema de Control Interno",
+          "href": "/agencia/control-interno",
+          "icon": "fa-clipboard-check"
+        }
+      ]
+    },
+    {
+      "label": "SIG",
+      "href": "/sig",
+      "icon": "fa-diagram-project"
+    },
+    {
+      "label": "Aplicaciones",
+      "href": "/aplicaciones",
+      "icon": "fa-table-cells"
+    },
+    {
+      "label": "Talento Humano",
+      "href": "/talento-humano",
+      "icon": "fa-users"
+    },
+    {
+      "label": "OATI",
+      "href": "/oati",
+      "icon": "fa-microchip"
+    },
+    {
+      "label": "PIGA",
+      "href": "/piga",
+      "icon": "fa-leaf"
+    },
+    {
+      "label": "Prensa",
+      "href": "/prensa",
+      "icon": "fa-newspaper",
+      "children": [
+        {
+          "label": "Noticias",
+          "href": "/prensa/noticias",
+          "icon": "fa-bullhorn"
+        },
+        {
+          "label": "Notijuridico",
+          "href": "/prensa/notijuridico",
+          "icon": "fa-scale-balanced"
+        },
+        {
+          "label": "Comunicados",
+          "href": "/prensa/comunicados",
+          "icon": "fa-file-lines"
+        },
+        {
+          "label": "Videos",
+          "href": "/prensa/videos",
+          "icon": "fa-video"
+        },
+        {
+          "label": "Boletines de Prensa",
+          "href": "/prensa/boletines",
+          "icon": "fa-scroll"
+        }
+      ]
+    },
+    {
+      "label": "Documentos",
+      "href": "/documentos",
+      "icon": "fa-folder-open"
+    },
+    {
+      "label": "Bienestar",
+      "href": "/bienestar",
+      "icon": "fa-heart"
+    }
+  ]
+}

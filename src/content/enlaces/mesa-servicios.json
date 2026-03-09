@@ -1,0 +1,9 @@
+{
+  "title": "Mesa de Servicios TI (GLPI)",
+  "description": "Sistema de mesa de ayuda y gestion de incidentes tecnologicos de la Agencia ITRC.",
+  "url": "https://mesadeayuda.agenciaitrc.gov.co/glpi/index.php?noAUTO=1",
+  "icon": "fa-headset",
+  "category": "Herramienta Interna",
+  "order": 4,
+  "display_mode": "visible"
+}

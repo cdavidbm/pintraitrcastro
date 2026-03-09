@@ -1,0 +1,19 @@
+{
+  "title": "Despacho del Inspector General",
+  "order": 1,
+  "funcionarios": [
+    {
+      "nombre": "Dr. Juan Carlos Martinez Lopez",
+      "cargo": "Inspector General de Tributos, Rentas y Contribuciones Parafiscales",
+      "email": "despacho@itrc.gov.co",
+      "extension": "101"
+    },
+    {
+      "nombre": "Dra. Maria Elena Gutierrez",
+      "cargo": "Asesora del Despacho",
+      "email": "asesoria.despacho@itrc.gov.co",
+      "extension": "102"
+    }
+  ],
+  "display_mode": "visible"
+}

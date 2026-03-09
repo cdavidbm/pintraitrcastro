@@ -1,0 +1,28 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+import DocumentTable from '@components/DocumentTable.astro';
+
+interface DocumentItem {
+  title: string;
+  category: string;
+  dependencia: string;
+  date: string;
+  version?: string;
+  archivo?: string;
+  display_mode?: string;
+}
+
+const docFiles = import.meta.glob<{ default: DocumentItem }>(
+  '../content/pages/documentos/*.json',
+  { eager: true }
+);
+
+const documents = Object.values(docFiles)
+  .map((mod) => mod.default)
+  .filter((d) => d.display_mode !== 'hidden')
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<SectionPage title="Documentos Internos" breadcrumbs={[{ label: 'Documentos' }]}>
+  <DocumentTable documents={documents} />
+</SectionPage>

@@ -1,0 +1,71 @@
+---
+interface Props {
+  title: string;
+  icon?: string;
+  href?: string;
+}
+
+const { title, icon, href } = Astro.props;
+---
+
+<article class="dashboard-card">
+  <header class="dashboard-card-header">
+    {icon && <i class={`fa-solid ${icon}`} aria-hidden="true"></i>}
+    <h3 class="dashboard-card-title">{title}</h3>
+    {href && (
+      <a href={href} class="dashboard-card-link">
+        Ver todo <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    )}
+  </header>
+  <div class="dashboard-card-body">
+    <slot />
+  </div>
+</article>
+
+<style>
+  .dashboard-card {
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .dashboard-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--theme-border-light);
+  }
+
+  .dashboard-card-header i {
+    color: var(--theme-accent-gold);
+    font-size: var(--font-size-sm);
+  }
+
+  .dashboard-card-title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--theme-text-primary);
+    flex: 1;
+  }
+
+  .dashboard-card-link {
+    font-size: var(--font-size-xs);
+    color: var(--theme-accent);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    white-space: nowrap;
+  }
+
+  .dashboard-card-link:hover {
+    text-decoration: underline;
+  }
+
+  .dashboard-card-body {
+    padding: var(--space-md) var(--space-lg);
+  }
+</style>

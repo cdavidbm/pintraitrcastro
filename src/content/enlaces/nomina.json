@@ -1,0 +1,9 @@
+{
+  "title": "Sistema de Nomina",
+  "description": "Sistema de Gestion del Empleo Publico para consulta de nomina, certificados laborales y novedades.",
+  "url": "http://nomina.agenciaitrc.gov.co/m4richwebnet.html?TYPE=PNET8",
+  "icon": "fa-money-check-dollar",
+  "category": "Herramienta Interna",
+  "order": 3,
+  "display_mode": "visible"
+}

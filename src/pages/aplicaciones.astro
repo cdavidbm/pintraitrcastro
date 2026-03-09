@@ -1,0 +1,138 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+
+interface EnlaceItem {
+  title: string;
+  description: string;
+  url: string;
+  icon: string;
+  category: string;
+  order: number;
+  display_mode: string;
+}
+
+const enlaceFiles = import.meta.glob<{ default: EnlaceItem }>(
+  '../content/enlaces/*.json',
+  { eager: true }
+);
+
+const enlaces = Object.values(enlaceFiles)
+  .map((mod) => mod.default)
+  .filter((e) => e.display_mode === 'visible')
+  .sort((a, b) => a.order - b.order);
+
+/* Group by category */
+const grouped = enlaces.reduce<Record<string, EnlaceItem[]>>((acc, enlace) => {
+  const cat = enlace.category;
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(enlace);
+  return acc;
+}, {});
+---
+
+<SectionPage title="Aplicaciones" breadcrumbs={[{ label: 'Aplicaciones' }]}>
+  {Object.keys(grouped).length > 0 ? (
+    Object.entries(grouped).map(([category, items]) => (
+      <section class="enlaces-section">
+        <h2 class="enlaces-category">{category}</h2>
+        <div class="enlaces-grid">
+          {items.map((enlace) => (
+            <a href={enlace.url} class="enlace-card" target="_blank" rel="noopener noreferrer">
+              <div class="enlace-icon">
+                <i class={`fa-solid ${enlace.icon}`} aria-hidden="true"></i>
+              </div>
+              <div class="enlace-info">
+                <h3 class="enlace-title">{enlace.title}</h3>
+                <p class="enlace-desc">{enlace.description}</p>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square enlace-external" aria-hidden="true"></i>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))
+  ) : (
+    <p class="empty-state">No hay aplicaciones disponibles.</p>
+  )}
+</SectionPage>
+
+<style>
+  .enlaces-section {
+    margin-bottom: var(--space-xl);
+  }
+
+  .enlaces-category {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--theme-accent-gold);
+  }
+
+  .enlaces-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .enlace-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--theme-text-primary);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .enlace-card:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--theme-accent);
+    text-decoration: none;
+  }
+
+  .enlace-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(9, 67, 181, 0.08);
+    color: var(--theme-accent);
+    font-size: var(--font-size-lg);
+  }
+
+  .enlace-info {
+    flex: 1;
+  }
+
+  .enlace-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+  }
+
+  .enlace-desc {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+
+  .enlace-external {
+    flex-shrink: 0;
+    color: var(--theme-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .empty-state {
+    color: var(--theme-text-muted);
+    text-align: center;
+    padding: var(--space-xl);
+  }
+</style>

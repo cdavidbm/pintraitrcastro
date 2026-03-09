@@ -1,0 +1,43 @@
+---
+import Base from '@layouts/Base.astro';
+import Sidebar from '@components/layout/Sidebar.astro';
+import Header from '@components/layout/Header.astro';
+import Breadcrumb from '@components/Breadcrumb.astro';
+
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  breadcrumbs: BreadcrumbItem[];
+}
+
+const { title, breadcrumbs } = Astro.props;
+---
+
+<Base title={title}>
+  <Sidebar slot="sidebar" />
+  <Header slot="header" />
+
+  <Breadcrumb items={breadcrumbs} />
+
+  <div class="section-header">
+    <h1 class="section-page-title">{title}</h1>
+  </div>
+
+  <slot />
+</Base>
+
+<style>
+  .section-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .section-page-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--theme-text-primary);
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+interface Props {
+  nombre: string;
+  cargo: string;
+  email: string;
+  extension?: string;
+  foto?: string;
+}
+
+const { nombre, cargo, email, extension, foto } = Astro.props;
+const basePath = import.meta.env.BASE_URL;
+const initials = nombre.split(' ').map(n => n[0]).slice(0, 2).join('');
+---
+
+<article class="funcionario-card">
+  <div class="funcionario-avatar">
+    {foto ? (
+      <img src={`${basePath}${foto.replace(/^\//, '')}`} alt={`Foto de ${nombre}`} width="48" height="48" />
+    ) : (
+      <span class="funcionario-initials">{initials}</span>
+    )}
+  </div>
+  <div class="funcionario-info">
+    <h4 class="funcionario-name">{nombre}</h4>
+    <p class="funcionario-cargo">{cargo}</p>
+    <div class="funcionario-contact">
+      <a href={`mailto:${email}`}>
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+        {email}
+      </a>
+      {extension && (
+        <span class="funcionario-ext">
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
+          Ext. {extension}
+        </span>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .funcionario-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    transition: box-shadow var(--transition-fast);
+  }
+
+  .funcionario-card:hover {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .funcionario-avatar {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--brand-navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .funcionario-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .funcionario-initials {
+    color: var(--neutral-0);
+    font-weight: 700;
+    font-size: var(--font-size-sm);
+  }
+
+  .funcionario-name {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--theme-text-primary);
+  }
+
+  .funcionario-cargo {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    margin-top: 2px;
+  }
+
+  .funcionario-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-top: var(--space-sm);
+    font-size: var(--font-size-xs);
+  }
+
+  .funcionario-contact a {
+    color: var(--theme-accent);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .funcionario-contact a:hover {
+    text-decoration: underline;
+  }
+
+  .funcionario-ext {
+    color: var(--theme-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+</style>

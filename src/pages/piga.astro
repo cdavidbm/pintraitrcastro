@@ -1,0 +1,82 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+---
+
+<SectionPage title="PIGA - Plan Institucional de Gestion Ambiental" breadcrumbs={[{ label: 'PIGA' }]}>
+  <p class="section-intro">
+    El Plan Institucional de Gestion Ambiental (PIGA) de la Agencia ITRC establece las acciones
+    de gestion ambiental orientadas a la eficiencia en el uso de los recursos y la prevencion de la contaminacion.
+  </p>
+
+  <div class="piga-grid">
+    <div class="piga-card">
+      <div class="piga-icon"><i class="fa-solid fa-recycle" aria-hidden="true"></i></div>
+      <h3>Gestion Integral de Residuos</h3>
+      <p>Programas de separacion en la fuente, reciclaje y manejo de residuos solidos.</p>
+    </div>
+    <div class="piga-card">
+      <div class="piga-icon"><i class="fa-solid fa-bolt" aria-hidden="true"></i></div>
+      <h3>Uso Eficiente de Energia</h3>
+      <p>Estrategias para la reduccion del consumo energetico en las instalaciones.</p>
+    </div>
+    <div class="piga-card">
+      <div class="piga-icon"><i class="fa-solid fa-droplet" aria-hidden="true"></i></div>
+      <h3>Uso Eficiente del Agua</h3>
+      <p>Programas de ahorro y uso racional del recurso hidrico.</p>
+    </div>
+    <div class="piga-card">
+      <div class="piga-icon"><i class="fa-solid fa-tree" aria-hidden="true"></i></div>
+      <h3>Practicas Sostenibles</h3>
+      <p>Implementacion de compras sostenibles y buenas practicas ambientales.</p>
+    </div>
+  </div>
+</SectionPage>
+
+<style>
+  .section-intro {
+    color: var(--theme-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    max-width: 72ch;
+  }
+
+  .piga-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .piga-card {
+    padding: var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--brand-green, #2e7d32);
+  }
+
+  .piga-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(46, 125, 50, 0.08);
+    color: var(--brand-green, #2e7d32);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .piga-card h3 {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .piga-card p {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    line-height: 1.5;
+  }
+</style>

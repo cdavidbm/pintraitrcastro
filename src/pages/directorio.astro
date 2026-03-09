@@ -1,0 +1,79 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+import FuncionarioCard from '@components/FuncionarioCard.astro';
+
+interface Funcionario {
+  nombre: string;
+  cargo: string;
+  email: string;
+  extension?: string;
+  foto?: string;
+}
+
+interface Dependencia {
+  title: string;
+  order: number;
+  funcionarios: Funcionario[];
+  display_mode: string;
+}
+
+const depFiles = import.meta.glob<{ default: Dependencia }>(
+  '../content/pages/directorio/*.json',
+  { eager: true }
+);
+
+const dependencias = Object.values(depFiles)
+  .map((mod) => mod.default)
+  .filter((d) => d.display_mode === 'visible')
+  .sort((a, b) => a.order - b.order);
+---
+
+<SectionPage title="Directorio de Funcionarios" breadcrumbs={[{ label: 'Directorio' }]}>
+  {dependencias.map((dep) => (
+    <section class="directorio-section">
+      <h2 class="directorio-dep-title">{dep.title}</h2>
+      <div class="directorio-grid">
+        {dep.funcionarios.map((func) => (
+          <FuncionarioCard
+            nombre={func.nombre}
+            cargo={func.cargo}
+            email={func.email}
+            extension={func.extension}
+            foto={func.foto}
+          />
+        ))}
+      </div>
+    </section>
+  ))}
+
+  {dependencias.length === 0 && (
+    <p class="empty-state">No hay dependencias registradas.</p>
+  )}
+</SectionPage>
+
+<style>
+  .directorio-section {
+    margin-bottom: var(--space-xl);
+  }
+
+  .directorio-dep-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--theme-accent-gold);
+  }
+
+  .directorio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .empty-state {
+    color: var(--theme-text-muted);
+    text-align: center;
+    padding: var(--space-xl);
+  }
+</style>

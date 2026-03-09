@@ -1,0 +1,101 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+
+const subsections = [
+  { title: 'Mision, Vision y Proposito', href: '/agencia/mision-vision', icon: 'fa-bullseye', desc: 'Conoce la razon de ser de la Agencia ITRC.' },
+  { title: 'Directorio de Servidores', href: '/directorio', icon: 'fa-address-book', desc: 'Consulta el directorio de funcionarios de la entidad.' },
+  { title: 'Organigrama', href: '/agencia/organigrama', icon: 'fa-sitemap', desc: 'Estructura organizacional de la Agencia.' },
+  { title: 'Resoluciones', href: '/agencia/resoluciones', icon: 'fa-gavel', desc: 'Resoluciones internas de la Agencia ITRC.' },
+  { title: 'Normativa Aplicable', href: '/agencia/normativa', icon: 'fa-scale-balanced', desc: 'Marco normativo y legal aplicable.' },
+  { title: 'Sistema de Control Interno', href: '/agencia/control-interno', icon: 'fa-clipboard-check', desc: 'Informacion del Sistema de Control Interno.' },
+];
+---
+
+<SectionPage title="Agencia" breadcrumbs={[{ label: 'Agencia' }]}>
+  <p class="section-intro">
+    La Agencia del Inspector General de Tributos, Rentas y Contribuciones Parafiscales (ITRC) es una entidad del Estado colombiano encargada de ejercer vigilancia sobre la gestion tributaria, aduanera y cambiaria.
+  </p>
+
+  <div class="subsections-grid">
+    {subsections.map((s) => (
+      <a href={s.href} class="subsection-card">
+        <div class="subsection-icon">
+          <i class={`fa-solid ${s.icon}`} aria-hidden="true"></i>
+        </div>
+        <div class="subsection-info">
+          <h3>{s.title}</h3>
+          <p>{s.desc}</p>
+        </div>
+        <i class="fa-solid fa-chevron-right subsection-arrow" aria-hidden="true"></i>
+      </a>
+    ))}
+  </div>
+</SectionPage>
+
+<style>
+  .section-intro {
+    color: var(--theme-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    max-width: 72ch;
+  }
+
+  .subsections-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .subsection-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--theme-text-primary);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .subsection-card:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--theme-accent);
+  }
+
+  .subsection-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgba(9, 67, 181, 0.08);
+    color: var(--theme-accent);
+    font-size: var(--font-size-lg);
+  }
+
+  .subsection-info {
+    flex: 1;
+  }
+
+  .subsection-info h3 {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .subsection-info p {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    line-height: 1.4;
+  }
+
+  .subsection-arrow {
+    flex-shrink: 0;
+    color: var(--theme-text-muted);
+    font-size: var(--font-size-sm);
+  }
+</style>

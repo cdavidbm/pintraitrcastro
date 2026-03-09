@@ -1,0 +1,9 @@
+{
+  "title": "Sitio Web ITRC",
+  "description": "Portal web institucional de la Agencia del Inspector General de Tributos, Rentas y Contribuciones Parafiscales.",
+  "url": "https://www.itrc.gov.co",
+  "icon": "fa-globe",
+  "category": "Portal Externo",
+  "order": 8,
+  "display_mode": "visible"
+}

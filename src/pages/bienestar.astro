@@ -1,0 +1,153 @@
+---
+import SectionPage from '@layouts/SectionPage.astro';
+
+const basePath = import.meta.env.BASE_URL;
+
+interface BienestarItem {
+  title: string;
+  description: string;
+  category: string;
+  date: string;
+  image?: string;
+  contact?: string;
+  display_mode: string;
+}
+
+const bienFiles = import.meta.glob<{ default: BienestarItem }>(
+  '../content/pages/bienestar/*.json',
+  { eager: true }
+);
+
+const actividades = Object.values(bienFiles)
+  .map((mod) => mod.default)
+  .filter((a) => a.display_mode === 'visible')
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const categoryIcons: Record<string, string> = {
+  Actividad: 'fa-calendar-check',
+  Beneficio: 'fa-gift',
+  'Salud Ocupacional': 'fa-heart-pulse',
+  Recreacion: 'fa-futbol',
+};
+---
+
+<SectionPage title="Bienestar Laboral" breadcrumbs={[{ label: 'Bienestar' }]}>
+  <div class="bienestar-grid">
+    {actividades.length > 0 ? (
+      actividades.map((item) => {
+        const formattedDate = new Date(item.date).toLocaleDateString('es-CO', {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+        return (
+          <article class="bienestar-card">
+            {item.image && (
+              <div class="bienestar-image">
+                <img src={`${basePath}${item.image.replace(/^\//, '')}`} alt={item.title} />
+              </div>
+            )}
+            <div class="bienestar-body">
+              <div class="bienestar-category">
+                <i class={`fa-solid ${categoryIcons[item.category] ?? 'fa-heart'}`} aria-hidden="true"></i>
+                {item.category}
+              </div>
+              <h3 class="bienestar-title">{item.title}</h3>
+              <p class="bienestar-desc">{item.description}</p>
+              <div class="bienestar-footer">
+                <time datetime={item.date}>{formattedDate}</time>
+                {item.contact && (
+                  <span class="bienestar-contact">
+                    <i class="fa-solid fa-phone" aria-hidden="true"></i> {item.contact}
+                  </span>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      })
+    ) : (
+      <p class="empty-state">No hay actividades de bienestar disponibles.</p>
+    )}
+  </div>
+</SectionPage>
+
+<style>
+  .bienestar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .bienestar-card {
+    background: var(--theme-bg-surface);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: box-shadow var(--transition-fast);
+  }
+
+  .bienestar-card:hover {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .bienestar-image {
+    height: 160px;
+    overflow: hidden;
+  }
+
+  .bienestar-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .bienestar-body {
+    padding: var(--space-lg);
+  }
+
+  .bienestar-category {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--theme-success);
+    margin-bottom: var(--space-sm);
+  }
+
+  .bienestar-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--theme-text-primary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .bienestar-desc {
+    font-size: var(--font-size-sm);
+    color: var(--theme-text-secondary);
+    line-height: 1.5;
+  }
+
+  .bienestar-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--theme-border-light);
+    font-size: var(--font-size-xs);
+    color: var(--theme-text-muted);
+  }
+
+  .bienestar-contact {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .empty-state {
+    color: var(--theme-text-muted);
+    text-align: center;
+    padding: var(--space-xl);
+    grid-column: 1 / -1;
+  }
+</style>
