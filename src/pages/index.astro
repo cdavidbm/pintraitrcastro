@@ -2,6 +2,7 @@
 import Base from '@layouts/Base.astro';
 import Sidebar from '@components/layout/Sidebar.astro';
 import Header from '@components/layout/Header.astro';
+import HeroSlider from '@components/HeroSlider.astro';
 import QuickLinks from '@components/QuickLinks.astro';
 import DashboardCard from '@components/DashboardCard.astro';
 import AnuncioCard from '@components/AnuncioCard.astro';
@@ -57,6 +58,8 @@ const eventos = Object.values(eventoFiles)
 <Base title="Inicio">
   <Sidebar slot="sidebar" />
   <Header slot="header" />
+
+  <HeroSlider slider="home" />
 
   <div class="dashboard-welcome">
     <h1 class="dashboard-title">Bienvenido a la Intranet</h1>
@@ -125,6 +128,7 @@ const eventos = Object.values(eventoFiles)
 
 <style>
   .dashboard-welcome {
+    margin-top: var(--space-xl);
     margin-bottom: var(--space-xl);
   }
 

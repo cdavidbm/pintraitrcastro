@@ -13,6 +13,7 @@ import { enlacesCollection } from './collections/enlaces.js';
 import { directorioCollection } from './collections/directorio.js';
 import { documentosCollection } from './collections/documentos.js';
 import { bienestarCollection } from './collections/bienestar.js';
+import { slidersCollection } from './collections/sliders.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUT = resolve(__dirname, '../public/admin/config.yml');
@@ -33,6 +34,7 @@ const config = {
     directorioCollection,
     documentosCollection,
     bienestarCollection,
+    slidersCollection,
   ],
 };
 

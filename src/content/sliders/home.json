@@ -1,0 +1,41 @@
+{
+  "name": "Slider Principal",
+  "description": "Slider del banner principal de la intranet",
+  "autoplay": true,
+  "interval": 5000,
+  "slides": [
+    {
+      "image": "/uploads/banners/banner-intranet.svg",
+      "imageAlt": "Intranet Agencia ITRC",
+      "title": "Intranet Institucional",
+      "subtitle": "Agencia ITRC",
+      "description": "Plataforma interna para la gestion, comunicacion y acceso a herramientas institucionales",
+      "link": "/anuncios",
+      "linkText": "Ver anuncios",
+      "active": true,
+      "order": 1
+    },
+    {
+      "image": "/uploads/banners/banner-sig.svg",
+      "imageAlt": "Sistema Integrado de Gestion",
+      "title": "Sistema Integrado de Gestion",
+      "subtitle": "SIG",
+      "description": "Consulta los procesos, procedimientos e indicadores del Sistema Integrado de Gestion",
+      "link": "/sig",
+      "linkText": "Ir al SIG",
+      "active": true,
+      "order": 2
+    },
+    {
+      "image": "/uploads/banners/banner-talento.svg",
+      "imageAlt": "Talento Humano",
+      "title": "Talento Humano",
+      "subtitle": "Bienestar y desarrollo",
+      "description": "Capacitaciones, bienestar laboral y novedades de talento humano",
+      "link": "/talento-humano",
+      "linkText": "Conocer mas",
+      "active": true,
+      "order": 3
+    }
+  ]
+}
